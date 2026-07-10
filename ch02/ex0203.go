@@ -5,7 +5,7 @@ import "fmt"
 const x int64 = 10
 
 const (
-	idKey = "id"
+	idKey   = "id"
 	nameKey = "name"
 )
 

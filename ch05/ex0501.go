@@ -1,4 +1,4 @@
-package main 
+package main
 
 import "fmt"
 
@@ -13,4 +13,3 @@ func main() {
 	result := div(5, 2)
 	fmt.Println(result)
 }
-

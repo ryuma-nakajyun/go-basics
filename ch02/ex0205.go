@@ -14,5 +14,4 @@ func main() {
 	fmt.Println(π)
 	fmt.Println(a)
 	fmt.Println(数値１)
-
 }

@@ -4,8 +4,8 @@ import "fmt"
 
 type MyFuncOpts struct {
 	FirstName string
-	LastName string
-	Age int
+	LastName  string
+	Age       int
 }
 
 func MyFunc(opts MyFuncOpts) error {
@@ -15,12 +15,12 @@ func MyFunc(opts MyFuncOpts) error {
 }
 
 func main() {
-	MyFunc(MyFuncOpts {
+	MyFunc(MyFuncOpts{
 		LastName: "Patel",
-		Age: 50,
+		Age:      50,
 	})
-	MyFunc(MyFuncOpts {
+	MyFunc(MyFuncOpts{
 		FirstName: "Joe",
-		LastName: "Smith",
+		LastName:  "Smith",
 	})
 }

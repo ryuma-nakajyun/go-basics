@@ -10,7 +10,7 @@ func main() {
 	pc, _, _, _ := run\time.Caller(0)
 	fmt.Println("start:" + runtime.FuncForPC(pc).Name())
 	fmt.Println("Hello, world")
-	time.Sleep(10 * time.Second) // 10秒だけ生かす
+	time.Sleep(3 * time.Second) // 3秒だけ生かす
 	fmt.Println("end:" + runtime.FuncForPC(pc).Name())
 }
 

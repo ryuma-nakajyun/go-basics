@@ -2,10 +2,9 @@ package main
 
 import "fmt"
 
-func main(){
-
+func main() {
 	{
-		var data []int  // 
+		var data []int           //
 		fmt.Println(data == nil) //
 
 	}
