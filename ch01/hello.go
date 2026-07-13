@@ -19,13 +19,17 @@ func readFile(name string) {
 }
 
 func main() {
-	pc, _, _, _ := runtime.Caller(0)
-	fmt.Println("start:" + runtime.FuncForPC(pc).Name())
+	pc, _, _, _ := runtime.Caller(0)	
+	currentTime := time.Now()
+	fmt.Println("currentTime", currentTime, "start:", runtime.FuncForPC(pc).Name())
+
 	fmt.Println("Hello, world")
-	time.Sleep(3 * time.Second) // 3秒だけ生かす
+	time.Sleep(1 * time.Second) // 1秒だけ生かす
 
 	readFile("sample.txt")
-		
-	fmt.Println("end:" + runtime.FuncForPC(pc).Name())
+	
+	currentTime = time.Now()
+	fmt.Println("currentTime", currentTime, "end:", runtime.FuncForPC(pc).Name())
 }
+
 
