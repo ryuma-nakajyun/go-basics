@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-const TimeFormatMilli = "2006-01-02 15:04:05.000"
-
 func main() {
 	pc, _, _, _ := runtime.Caller(0)
 	currentTime := time.Now()
