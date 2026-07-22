@@ -32,8 +32,8 @@ func main() {
 
 	// start
 	currentTime := time.Now()
-	logger.Info("start",
-		"time", currentTime.Format(TimeFormatMilli),
+	logger.Info(
+		fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)),
 		"func", fn,
 	)
 
@@ -46,8 +46,8 @@ func main() {
 
 	// end
 	currentTime = time.Now()
-	logger.Info("end",
-		"time", currentTime.Format(TimeFormatMilli),
+	logger.Info(
+		fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)),
 		"func", fn,
 	)
 }

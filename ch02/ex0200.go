@@ -2,21 +2,43 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
+	"os"
 	"runtime"
 	"time"
 )
 
 // 定数宣言
+const TimeFormatMilli = "2006-01-02 15:04:05.000"
+
+// slog の自動 timestamp を消すハンドラ
+func newHandler() slog.Handler {
+	return slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			// slog が自動で付ける timestamp を削除
+			if a.Key == slog.TimeKey {
+				return slog.Attr{}
+			}
+			return a
+		},
+		AddSource: true, // file:line を出す
+	})
+}
 
 // 2章のリスト番号の付いていないコードを試すためのものです。
 // エラーになる例は、コメントになっています。
 func main() {
-
-	const TimeFormatMilli = "2006-01-02 15:04:05.000"
+	logger := slog.New(newHandler())
 
 	pc, _, _, _ := runtime.Caller(0)
+	fn := runtime.FuncForPC(pc).Name()
+
+	// start
 	currentTime := time.Now()
-	fmt.Println("currentTime", currentTime.Format(TimeFormatMilli), "start:", runtime.FuncForPC(pc).Name())
+	logger.Info(
+		fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)),
+		"func", fn,
+	)
 
 	fmt.Println("===== 2.1　基本型 =====")
 	fmt.Println("===== 2.1.1　ゼロ値 =====")
@@ -202,6 +224,10 @@ func main() {
 		x = 30
 	}
 
+	// end
 	currentTime = time.Now()
-	fmt.Println("currentTime", currentTime.Format(TimeFormatMilli), "end:", runtime.FuncForPC(pc).Name())
+	logger.Info(
+		fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)),
+		"func", fn,
+	)
 }
