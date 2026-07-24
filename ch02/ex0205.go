@@ -27,16 +27,12 @@ func newHandler() slog.Handler {
 
 func main() {
 	logger := slog.New(newHandler())
-
 	pc, _, _, _ := runtime.Caller(0)
 	fn := runtime.FuncForPC(pc).Name()
 
 	// start
 	currentTime := time.Now()
-	logger.Info(
-		fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)),
-		"func", fn,
-	)
+	logger.Info(fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)), "func", fn)
 
 	_0 := 0_0
 	_1 := 20
@@ -52,8 +48,5 @@ func main() {
 
 	// end
 	currentTime = time.Now()
-	logger.Info(
-		fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)),
-		"func", fn,
-	)
+	logger.Info(fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)), "func", fn)
 }

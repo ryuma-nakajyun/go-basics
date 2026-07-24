@@ -29,16 +29,12 @@ func newHandler() slog.Handler {
 // エラーになる例は、コメントになっています。
 func main() {
 	logger := slog.New(newHandler())
-
 	pc, _, _, _ := runtime.Caller(0)
 	fn := runtime.FuncForPC(pc).Name()
 
 	// start
 	currentTime := time.Now()
-	logger.Info(
-		fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)),
-		"func", fn,
-	)
+	logger.Info(fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)), "func", fn)
 
 	fmt.Println("===== 2.1　基本型 =====")
 	fmt.Println("===== 2.1.1　ゼロ値 =====")
@@ -226,8 +222,5 @@ func main() {
 
 	// end
 	currentTime = time.Now()
-	logger.Info(
-		fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)),
-		"func", fn,
-	)
+	logger.Info(fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)), "func", fn)
 }
