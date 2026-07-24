@@ -1,11 +1,37 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log/slog"
+	"os"
+	"runtime"
+	"time"
+)
 
+// 定数宣言
+const TimeFormatMilli = "2006-01-02 15:04:05.000"
+
+// slog の自動 timestamp を消すハンドラ
+func newHandler() slog.Handler {
+	return slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			// slog が自動で付ける timestamp を削除
+			if a.Key == slog.TimeKey {
+				return slog.Attr{}
+			}
+			return a
+		},
+		AddSource: true, // file:line を出す
+	})
+}
 func main() {
+	logger := slog.New(newHandler())
 	pc, _, _, _ := runtime.Caller(0)
+	fn := runtime.FuncForPC(pc).Name()
+
+	// start
 	currentTime := time.Now()
-	fmt.Println("currentTime", currentTime.Format(TimeFormatMilli), "start:", runtime.FuncForPC(pc).Name())
+	logger.Info(fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)), "func", fn)
 
 	fmt.Println("===== 3.1　配列 =====")
 	{
@@ -24,18 +50,17 @@ func main() {
 
 	fmt.Println("===== 配列の比較 =====")
 	{
-		var x = [...]int{1 ,2, 3}
-		var y = [3] int{1, 2, 3}
+		var x = [...]int{1, 2, 3}
+		var y = [3]int{1, 2, 3}
 		fmt.Println(x == y)
 	}
 
 	fmt.Println("===== 多次元配列のシミュレート =====")
 	{
-		var x = [2][3]int
+		var x = [2][3]int{}
 		fmt.Println(x)
 	}
 
-	
 	fmt.Println("===== インデックス（添字）の指定 =====")
 	{
 		var x [3]int
@@ -47,15 +72,13 @@ func main() {
 		y[0][2] = 12
 		y[1][1] = 3
 	}
-	
 
 	fmt.Println("===== len =====")
 	{
 		var x [3]int
 		fmt.Println("len(x):", len(x))
-
-		var y = [2][3]int
-		fmt.Println("len(y):", len((y))
+		var y = [2][3]int{}
+		fmt.Println("len(y[0]):", len(y[0])) // 3
 	}
 
 	fmt.Println("===== 3.2　スライス =====")
@@ -63,10 +86,10 @@ func main() {
 	fmt.Println("===== 3.3 文字列、rune、バイト=====")
 
 	fmt.Println("===== 3.4　マップ =====")
-	
+
 	fmt.Println("===== 3.5　構造体 =====")
 
-		currentTime = time.Now()
-	fmt.Println("currentTime", currentTime.Format(TimeFormatMilli), "end:", runtime.FuncForPC(pc).Name())
+	// end
+	currentTime = time.Now()
+	logger.Info(fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)), "func", fn)
 }
-
