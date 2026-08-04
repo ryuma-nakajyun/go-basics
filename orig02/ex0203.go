@@ -8,6 +8,8 @@ import (
 	"log/slog"
 	"os"
 	"runtime"
+	"strings"
+	"text/tabwriter"
 	"time"
 )
 
@@ -40,15 +42,29 @@ func readFile(name string) {
 	fn := runtime.FuncForPC(pc).Name()
 
 	currentTime := time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" start", "func", fn)
+	logger.Info(fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)), "func", fn)
 
 	f, err := os.Open(name)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer f.Close()
-
 	reader := bufio.NewReader(f)
+
+	// 1. ヘッダー行を読む
+	headerLine, _, err := reader.ReadLine()
+	if err != nil {
+		log.Fatal(err)
+	}
+	headers := strings.Split(string(headerLine), "\t")
+
+	// 2. 列名 → インデックスの map を作る
+	colIndex := make(map[string]int)
+	for i, h := range headers {
+		colIndex[h] = i
+	}
+
+	// 3. データ行を読む
 	for {
 		line, _, err := reader.ReadLine()
 		if err == io.EOF {
@@ -58,11 +74,20 @@ func readFile(name string) {
 			log.Fatal(err)
 		}
 
-		fmt.Println(string(line))
+		fields := strings.Split(string(line), "\t")
+		w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0) // カラムの幅を整える
+		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
+			fields[colIndex["iso_country_code"]],
+			fields[colIndex["country_name_ja_common"]],
+			fields[colIndex["capital_name_ja"]],
+			fields[colIndex["capital_latitude"]],
+			fields[colIndex["capital_longitude"]],
+		)
+		w.Flush()
 	}
 
 	currentTime = time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" end", "func", fn)
+	logger.Info(fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)), "func", fn)
 }
 
 // main
@@ -72,10 +97,10 @@ func main() {
 	fn := runtime.FuncForPC(pc).Name()
 
 	currentTime := time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" start", "func", fn)
+	logger.Info(fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)), "func", fn)
 
 	readFile(r0711world)
 
 	currentTime = time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" end", "func", fn)
+	logger.Info(fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)), "func", fn)
 }

@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"os"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -40,7 +41,7 @@ func readFile(name string) {
 	fn := runtime.FuncForPC(pc).Name()
 
 	currentTime := time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" start", "func", fn)
+	logger.Info(fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)), "func", fn)
 
 	f, err := os.Open(name)
 	if err != nil {
@@ -50,7 +51,7 @@ func readFile(name string) {
 
 	reader := bufio.NewReader(f)
 	for {
-		line, _, err := reader.ReadLine()
+		line, isPrefix, err := reader.ReadLine() // isPrefix が true の場合は「1行が長すぎて分割されている」必要なら結合処理を書く
 		if err == io.EOF {
 			break
 		}
@@ -58,11 +59,17 @@ func readFile(name string) {
 			log.Fatal(err)
 		}
 
-		fmt.Println(string(line))
+		if isPrefix {
+			log.Fatal("line too long")
+		}
+
+		fields := strings.Split(string(line), "\t")
+		fmt.Println(fields[0], fields[2], fields[3], fields[7], fields[8]) // fmt.Println(string(line[0])) これは先頭の一文字のみ
+
 	}
 
 	currentTime = time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" end", "func", fn)
+	logger.Info(fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)), "func", fn)
 }
 
 // main
@@ -72,10 +79,10 @@ func main() {
 	fn := runtime.FuncForPC(pc).Name()
 
 	currentTime := time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" start", "func", fn)
+	logger.Info(fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)), "func", fn)
 
 	readFile(r0711world)
 
 	currentTime = time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" end", "func", fn)
+	logger.Info(fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)), "func", fn)
 }
