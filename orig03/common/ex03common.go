@@ -56,7 +56,6 @@ func readFile(name string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		fmt.Println(string(line))
 	}
 
