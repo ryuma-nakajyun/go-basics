@@ -1,11 +1,10 @@
-package orig03
+package main
 
 import (
+	"fmt"
 	"log/slog"
 	"runtime"
 	"time"
-
-	"ex03comom"
 )
 
 // main
@@ -15,10 +14,10 @@ func main() {
 	fn := runtime.FuncForPC(pc).Name()
 
 	currentTime := time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" start", "func", fn)
+	logger.Info(fmt.Sprintf("%s start", currentTime.Format(TimeFormatMilli)), "func", fn)
 
 	readFile(r0711world)
 
 	currentTime = time.Now()
-	logger.Info(currentTime.Format(TimeFormatMilli)+" end", "func", fn)
+	logger.Info(fmt.Sprintf("%s end", currentTime.Format(TimeFormatMilli)), "func", fn)
 }

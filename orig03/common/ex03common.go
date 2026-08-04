@@ -1,4 +1,4 @@
-package orig03
+package common
 
 import (
 	"bufio"
