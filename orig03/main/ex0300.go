@@ -1,4 +1,4 @@
-package orig03
+package main
 
 import (
 	"log/slog"
