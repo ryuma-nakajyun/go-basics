@@ -53,6 +53,7 @@ func readFile(name string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	headers := strings.Split(string(headerLine), "\t")
 
 	// 2. 列名 → インデックスの map を作る
